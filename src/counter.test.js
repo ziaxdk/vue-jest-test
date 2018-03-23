@@ -1,4 +1,5 @@
 import flushPromises from 'flush-promises'
+import { createRenderer } from 'vue-server-renderer'
 import { mount, shallow } from '@vue/test-utils'
 
 import Counter from './counter'
@@ -41,4 +42,14 @@ describe('Counter', () => {
     expect(wrapper.vm.text).toEqual('yo-test')
     expect(wrapper.html()).toContain('<h3>yo-test</h3>')
   })
+
+  it('must snapshot', () => {
+    const renderer = createRenderer()
+    const wrapper = shallow(Counter)
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) throw new Error(err)
+      expect(str).toMatchSnapshot()
+    })
+  })
+
 })
