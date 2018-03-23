@@ -1,4 +1,4 @@
-import flushPromises from 'flush-promises'
+import done from 'flush-promises'
 import { createRenderer } from 'vue-server-renderer'
 import { mount, shallow } from '@vue/test-utils'
 
@@ -35,10 +35,20 @@ describe('Counter', () => {
     })
   })
 
+  it('has text yo await', async() => {
+    const wrapper = shallow(Counter)
+    await wrapper.vm.$nextTick()
+      // expect(wrapper.html()).toContain('<h3>ping-test</h3>')
+    expect(wrapper.vm.text).toEqual('yo-test')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.html()).toContain('<h3>yo-test</h3>')
+  })
+
+
   it('has text yo', async () => {
     const wrapper = shallow(Counter)
     // expect(wrapper.html()).toContain('<h3>ping-test</h3>')
-    await flushPromises()
+    await done()
     expect(wrapper.vm.text).toEqual('yo-test')
     expect(wrapper.html()).toContain('<h3>yo-test</h3>')
   })
